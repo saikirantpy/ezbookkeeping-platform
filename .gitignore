@@ -172,3 +172,5 @@ ezbookkeeping
 crash.log
 terraform.tfvars
 .terraform.lock.hcl
+# Private keys
+*.pem
