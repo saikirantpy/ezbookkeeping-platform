@@ -41,7 +41,13 @@ resource "aws_instance" "app" {
 
   monitoring = true
 
-  user_data                   = file("${path.module}/scripts/bootstrap.sh")
+  user_data                   = templatefile(
+  "${path.module}/scripts/bootstrap.sh.tpl",
+  {
+    github_repository = var.github_repository
+    github_branch     = var.github_branch
+  }
+  )
   user_data_replace_on_change = true
 
   metadata_options {

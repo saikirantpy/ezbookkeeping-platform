@@ -41,3 +41,14 @@ variable "instance_type" {
   description = "EC2 Instance Type"
   type        = string
 }
+
+variable "github_repository" {
+  description = "GitHub repository URL"
+  type        = string
+}
+
+variable "github_branch" {
+  description = "Git branch"
+  type        = string
+  default     = "main"
+}
