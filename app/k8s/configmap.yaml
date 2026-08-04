@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ezbookkeeping-config
+  namespace: ezbookkeeping
+
+data:
+  DB_HOST: postgres
+  DB_PORT: "5432"
+  APP_PORT: "8080"
+  ENVIRONMENT: Development

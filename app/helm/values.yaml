@@ -1,0 +1,180 @@
+#################################################
+# Global
+#################################################
+
+environment: Development
+
+#################################################
+# Application
+#################################################
+
+replicaCount: 1
+
+image:
+  repository: ezbookkeeping
+  tag: v2
+  pullPolicy: Never
+
+#################################################
+# Service
+#################################################
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+  #nodePort: 30080
+
+  #################################################
+  # PostgreSQL
+  #################################################
+
+postgres:
+
+  replicaCount: 1
+  image:
+    repository: postgres
+    tag: "17"
+    pullPolicy: IfNotPresent
+
+  database:
+    name: ezbookkeeping
+    user: ezuser
+    password: password123
+
+  service:
+    type: ClusterIP
+    port: 5432
+    targetPort: 5432
+
+#################################################
+# ConfigMap
+#################################################
+
+config:
+
+  dbHost: postgres
+
+  dbPort: "5432"
+
+  appPort: "8080"
+
+#################################################
+# Resources
+#################################################
+
+resources:
+
+  requests:
+    cpu: 200m
+    memory: 256Mi
+
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+#################################################
+# Startup Probe
+#################################################
+
+startupProbe:
+
+  enabled: true
+
+  path: /healthz.json
+
+  initialDelaySeconds: 0
+
+  periodSeconds: 10
+
+  timeoutSeconds: 1
+
+  failureThreshold: 30
+
+#################################################
+# Liveness Probe
+#################################################
+
+livenessProbe:
+
+  enabled: true
+
+  path: /healthz.json
+
+  initialDelaySeconds: 30
+
+  periodSeconds: 10
+
+  timeoutSeconds: 5
+
+  failureThreshold: 3
+
+#################################################
+# Readiness Probe
+#################################################
+
+readinessProbe:
+
+  enabled: true
+
+  path: /healthz.json
+
+  initialDelaySeconds: 5
+
+  periodSeconds: 5
+
+  timeoutSeconds: 3
+
+  failureThreshold: 3
+
+#################################################
+# Persistence
+#################################################
+
+persistence:
+
+  app:
+
+    enabled: true
+
+    accessMode: ReadWriteOnce
+
+    size: 1Gi
+
+  postgres:
+
+    enabled: true
+
+    accessMode: ReadWriteOnce
+
+    size: 5Gi
+
+#################################################
+# Ingress
+#################################################
+
+ingress:
+
+  enabled: true
+
+  className: nginx
+
+  host: ezbookkeeping.local
+
+  path: /
+
+  pathType: Prefix
+
+#################################################
+# HPA
+#################################################
+
+autoscaling:
+
+  enabled: true
+
+  minReplicas: 1
+
+  maxReplicas: 5
+
+  targetCPUUtilizationPercentage: 50

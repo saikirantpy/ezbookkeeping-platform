@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: ezbookkeeping-config-file
+  namespace: {{ .Release.Namespace }}
+
+data:
+  ezbookkeeping.ini: |
+{{ .Files.Get "files/ezbookkeeping.ini" | indent 4 }}

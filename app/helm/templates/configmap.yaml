@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: ezbookkeeping-config
+  namespace: {{ .Release.Namespace }}
+
+data:
+  DB_HOST: {{ .Values.config.dbHost | quote }}
+  DB_PORT: {{ .Values.config.dbPort | quote }}
+  APP_PORT: {{ .Values.config.appPort | quote }}
+  ENVIRONMENT: {{ .Values.environment | quote }}

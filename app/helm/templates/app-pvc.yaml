@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: app-data-pvc
+  namespace: {{ .Release.Namespace }}
+  annotations:
+   "helm.sh/resource-policy": keep
+
+spec:
+  accessModes:
+    - {{ .Values.persistence.app.accessMode }}
+
+  resources:
+    requests:
+      storage: {{ .Values.persistence.app.size }}
