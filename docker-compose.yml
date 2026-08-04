@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: 306404/ezbookkeeping-platform:v3
     container_name: ezbookkeeping
     restart: unless-stopped
     ports:

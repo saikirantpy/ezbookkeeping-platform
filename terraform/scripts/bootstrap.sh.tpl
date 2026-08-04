@@ -152,3 +152,10 @@ echo
 echo "NOTE:"
 echo "Reconnect to the EC2 instance (or run 'newgrp docker')"
 echo "before running Docker commands as ec2-user."
+
+##Run docker compose up -d
+cd /home/ec2-user/ezbookkeeping-platform
+
+docker compose pull
+
+docker compose up -d
