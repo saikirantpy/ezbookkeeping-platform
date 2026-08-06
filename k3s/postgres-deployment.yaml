@@ -60,6 +60,8 @@ spec:
             - pg_isready
             - -U
             - ezuser
+            - -d
+            - ezbookkeeping
           initialDelaySeconds: 10
           periodSeconds: 10
           timeoutSeconds: 5
@@ -71,6 +73,8 @@ spec:
             - pg_isready
             - -U
             - ezuser
+            - -d
+            - ezbookkeeping
           initialDelaySeconds: 30
           periodSeconds: 20
           timeoutSeconds: 5
