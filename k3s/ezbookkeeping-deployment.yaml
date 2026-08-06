@@ -42,7 +42,7 @@ spec:
 
         envFrom:
         - configMapRef:
-            name: ezbookkeeping-config
+            name: ezbookkeeping-config-file
         - secretRef:
             name: postgres-secret
 
