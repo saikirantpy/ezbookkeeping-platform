@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: ezbookkeeping
+  namespace: ezbookkeeping
+
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+
+  selector:
+    matchLabels:
+      app: ezbookkeeping
+
+  template:
+    metadata:
+      labels:
+        app: ezbookkeeping
+
+    spec:
+      terminationGracePeriodSeconds: 30
+
+      containers:
+      - name: ezbookkeeping
+        image: 306404/ezbookkeeping-platform:v3
+        imagePullPolicy: IfNotPresent
+
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+
+        envFrom:
+        - configMapRef:
+            name: ezbookkeeping-config
+        - secretRef:
+            name: postgres-secret
+
+        ports:
+        - containerPort: 8080
+
+        startupProbe:
+          httpGet:
+            path: /healthz.json
+            port: 8080
+          failureThreshold: 30
+          periodSeconds: 10
+
+        livenessProbe:
+          httpGet:
+            path: /healthz.json
+            port: 8080
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+
+        readinessProbe:
+          httpGet:
+            path: /healthz.json
+            port: 8080
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+
+        volumeMounts:
+        - name: app-data
+          mountPath: /ezbookkeeping/data
+
+        - name: ezbookkeeping-config
+          mountPath: /ezbookkeeping/conf/ezbookkeeping.ini
+          subPath: ezbookkeeping.ini
+
+      volumes:
+      - name: app-data
+        persistentVolumeClaim:
+          claimName: app-data-pvc
+
+      - name: ezbookkeeping-config
+        configMap:
+          name: ezbookkeeping-config-file

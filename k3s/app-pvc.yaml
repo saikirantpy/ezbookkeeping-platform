@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+
+metadata:
+  name: app-data-pvc
+  namespace: ezbookkeeping
+
+spec:
+  accessModes:
+    - ReadWriteOnce
+
+  resources:
+    requests:
+      storage: 1Gi
