@@ -42,7 +42,7 @@ resource "aws_instance" "app" {
   monitoring = true
 
   user_data                   = templatefile(
-  "${path.module}/scripts/bootstrap.sh.tpl",
+  "${path.module}/scripts/bootstrap-k3s.sh.tpl",
   {
     github_repository = var.github_repository
     github_branch     = var.github_branch
