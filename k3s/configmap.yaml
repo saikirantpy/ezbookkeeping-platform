@@ -1,11 +1,18 @@
-# apiVersion: v1
-# kind: ConfigMap
-# metadata:
-#   name: ezbookkeeping-config
-#   namespace: ezbookkeeping
+apiVersion: v1
+kind: ConfigMap
 
-# data:
-#   DB_HOST: postgres
-#   DB_PORT: "5432"
-#   APP_PORT: "8080"
-#   ENVIRONMENT: Production
+metadata:
+  name: ezbookkeeping-config-file
+  namespace: ezbookkeeping
+
+data:
+  ezbookkeeping.ini: |
+    [Database]
+    Type=postgres
+    Host=postgres
+    Port=5432
+    Database=ezbookkeeping
+    Username=ezuser
+    Password=password123
+
+    # Paste the remaining contents of your ezbookkeeping.ini here
