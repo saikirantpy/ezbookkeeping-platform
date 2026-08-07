@@ -9,6 +9,7 @@ provider "aws" {
       Project     = local.project_name
       Environment = var.environment
       ManagedBy   = "Terraform"
+      Owner       = "Saikiran"
 
     }
 

@@ -1,69 +1,99 @@
 ###############################################
-# EKS Cluster Security Group
+# EKS Control Plane Security Group
 ###############################################
 
-resource "aws_security_group" "eks_cluster" {
+resource "aws_security_group" "control_plane" {
 
-  name = "${local.project_name}-eks-cluster"
-
-  description = "Security Group for EKS Control Plane"
-
-  vpc_id = aws_vpc.main.id
+  name        = "${local.project_name}-control-plane"
+  description = "Security Group for Amazon EKS Control Plane"
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
-
     local.common_tags,
-
     {
-      Name = "${local.project_name}-eks-cluster-sg"
+      Name = "${local.project_name}-control-plane-sg"
     }
-
   )
 
 }
+
 ###############################################
-# Worker Node Security Group
+# Control Plane Outbound
 ###############################################
 
-resource "aws_security_group" "worker_nodes" {
+resource "aws_vpc_security_group_egress_rule" "control_plane_outbound" {
 
-  name = "${local.project_name}-worker-nodes"
+  security_group_id = aws_security_group.control_plane.id
 
-  description = "Security Group for EKS Worker Nodes"
+  cidr_ipv4 = "0.0.0.0/0"
 
-  vpc_id = aws_vpc.main.id
-
-  tags = merge(
-
-    local.common_tags,
-
-    {
-      Name = "${local.project_name}-worker-sg"
-    }
-
-  )
+  ip_protocol = "-1"
 
 }
+
 ###############################################
-# Application Load Balancer
+# Application Load Balancer Security Group
 ###############################################
 
 resource "aws_security_group" "alb" {
 
-  name = "${local.project_name}-alb"
-
-  description = "Security Group for AWS Load Balancer"
-
-  vpc_id = aws_vpc.main.id
+  name        = "${local.project_name}-alb"
+  description = "Security Group for AWS Application Load Balancer"
+  vpc_id      = aws_vpc.main.id
 
   tags = merge(
-
     local.common_tags,
-
     {
       Name = "${local.project_name}-alb-sg"
     }
-
   )
+
+}
+
+###############################################
+# ALB HTTP Inbound
+###############################################
+
+resource "aws_vpc_security_group_ingress_rule" "alb_http" {
+
+  security_group_id = aws_security_group.alb.id
+
+  cidr_ipv4 = "0.0.0.0/0"
+
+  from_port = 80
+  to_port   = 80
+
+  ip_protocol = "tcp"
+
+}
+
+###############################################
+# ALB HTTPS Inbound
+###############################################
+
+resource "aws_vpc_security_group_ingress_rule" "alb_https" {
+
+  security_group_id = aws_security_group.alb.id
+
+  cidr_ipv4 = "0.0.0.0/0"
+
+  from_port = 443
+  to_port   = 443
+
+  ip_protocol = "tcp"
+
+}
+
+###############################################
+# ALB Outbound
+###############################################
+
+resource "aws_vpc_security_group_egress_rule" "alb_outbound" {
+
+  security_group_id = aws_security_group.alb.id
+
+  cidr_ipv4 = "0.0.0.0/0"
+
+  ip_protocol = "-1"
 
 }

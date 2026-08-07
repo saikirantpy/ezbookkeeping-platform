@@ -85,3 +85,16 @@ variable "node_group_name" {
   type = string
 
 }
+
+variable "kubernetes_version" {
+
+  description = "Amazon EKS Kubernetes Version"
+
+  type = string
+
+}
+
+variable "instance_type" {
+  description = "EKS Worker Node Instance Type"
+  type        = string
+}

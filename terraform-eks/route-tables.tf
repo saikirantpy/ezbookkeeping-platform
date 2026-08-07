@@ -30,6 +30,9 @@ resource "aws_route" "public_internet" {
   gateway_id = aws_internet_gateway.main.id
 
 }
+###############################################
+# Public Route Table Associations
+###############################################
 resource "aws_route_table_association" "public_1" {
 
   subnet_id = aws_subnet.public_1.id
@@ -37,6 +40,9 @@ resource "aws_route_table_association" "public_1" {
   route_table_id = aws_route_table.public.id
 
 }
+###############################################
+# Public Route Table Associations
+###############################################
 resource "aws_route_table_association" "public_2" {
 
   subnet_id = aws_subnet.public_2.id
@@ -63,6 +69,9 @@ resource "aws_route_table" "private" {
   )
 
 }
+###############################################
+# Private Route Table Associations
+###############################################
 resource "aws_route_table_association" "private_1" {
 
   subnet_id = aws_subnet.private_1.id
@@ -70,6 +79,9 @@ resource "aws_route_table_association" "private_1" {
   route_table_id = aws_route_table.private.id
 
 }
+###############################################
+# Private Route Table Associations
+###############################################
 resource "aws_route_table_association" "private_2" {
 
   subnet_id = aws_subnet.private_2.id
