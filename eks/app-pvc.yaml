@@ -6,8 +6,9 @@ metadata:
   namespace: ezbookkeeping
 
 spec:
+  storageClassName: gp2
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
 
   resources:
     requests:

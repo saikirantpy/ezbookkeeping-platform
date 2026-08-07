@@ -6,7 +6,7 @@ metadata:
   namespace: ezbookkeeping
 
 spec:
-  type: ClusterIP
+  type: LoadBalancer
 
   selector:
     app: ezbookkeeping

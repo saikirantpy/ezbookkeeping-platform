@@ -29,7 +29,7 @@ spec:
 
       containers:
       - name: ezbookkeeping
-        image: 306404/ezbookkeeping-platform:v3
+        image: 356627769772.dkr.ecr.ap-south-1.amazonaws.com/ezbookkeeping:v3
         imagePullPolicy: IfNotPresent
 
         resources:

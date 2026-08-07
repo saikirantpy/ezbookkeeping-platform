@@ -6,7 +6,8 @@ metadata:
   namespace: ezbookkeeping
 
 spec:
-  storageClassName: local-path
+  #storageClassName: local-path
+  storageClassName: gp2
 
   accessModes:
   - ReadWriteOnce
