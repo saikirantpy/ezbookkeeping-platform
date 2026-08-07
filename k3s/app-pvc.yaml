@@ -6,8 +6,10 @@ metadata:
   namespace: ezbookkeeping
 
 spec:
+  storageClassName: local-path
+
   accessModes:
-    - ReadWriteOnce
+  - ReadWriteOnce
 
   resources:
     requests:
