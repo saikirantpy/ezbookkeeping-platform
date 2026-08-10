@@ -7,7 +7,7 @@ set -e
 ###############################################
 
 AWS_REGION="ap-south-1"
-LOCAL_IMAGE="ezbookkeeping:v3"
+LOCAL_IMAGE="306404/ezbookkeeping-platform:v3"
 
 PROJECT_ROOT=$(cd "$(dirname "$0")" && pwd)
 TF_DIR="$PROJECT_ROOT/terraform-eks"
@@ -98,11 +98,14 @@ terraform_apply() {
 
     cd "$TF_DIR"
 
-    terraform init
+    terraform init -upgrade
 
     info "Applying Terraform Infrastructure..."
 
-    terraform apply -auto-approve
+    terraform apply \
+    -auto-approve \
+    -input=false \
+    -var-file="terraform.tfvars"
 
     success "Terraform Apply Completed."
 
