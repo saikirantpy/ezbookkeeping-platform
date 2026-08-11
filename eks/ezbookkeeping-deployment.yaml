@@ -29,7 +29,7 @@ spec:
 
       containers:
       - name: ezbookkeeping
-        image: __ECR_REPOSITORY__:latest
+        image: 356627769772.dkr.ecr.ap-south-1.amazonaws.com/ezbookkeeping:latest
         imagePullPolicy: Always
 
         resources:

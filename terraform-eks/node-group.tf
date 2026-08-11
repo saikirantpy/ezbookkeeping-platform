@@ -51,7 +51,9 @@ resource "aws_eks_node_group" "main" {
 
     aws_iam_role_policy_attachment.ecr_policy,
 
-    aws_iam_role_policy_attachment.cni_policy
+    aws_iam_role_policy_attachment.cni_policy,
+
+     aws_iam_role_policy_attachment.ebs_csi_policy
 
   ]
 

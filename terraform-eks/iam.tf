@@ -98,3 +98,14 @@ resource "aws_iam_role_policy_attachment" "cni_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 
 }
+###############################################
+# Amazon EBS CSI Driver Policy
+###############################################
+
+resource "aws_iam_role_policy_attachment" "ebs_csi_policy" {
+
+  role = aws_iam_role.worker_nodes.name
+
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+
+}
