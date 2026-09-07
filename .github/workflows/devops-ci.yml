@@ -1,0 +1,36 @@
+name: DevOps CI
+
+on:
+  push:
+    branches:
+      - feature/github-actions
+
+  pull_request:
+    branches:
+      - feature/github-actions
+
+jobs:
+  build:
+    name: Build Application
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v6
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build Go application
+        run: |
+          go build ./...
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --platform linux/amd64 \
+            -t ezbookkeeping:ci-${{ github.sha }} \
+            .
