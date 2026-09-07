@@ -16,7 +16,7 @@ WORKDIR /go/src/github.com/mayswind/ezbookkeeping
 COPY . .
 RUN docker/backend-build-pre-setup.sh
 RUN apk add git gcc g++ libc-dev
-RUN ./build.sh backend --no-tests
+RUN ./build.sh backend --no-test
 
 # Build frontend files
 FROM --platform=$BUILDPLATFORM node:24.18.0-alpine3.24 AS fe-builder
