@@ -1,4 +1,5 @@
-name: DevOps CI
+
+name: DevOps CI-CD
 
 on:
   push:
@@ -9,9 +10,18 @@ on:
     branches:
       - feature/github-actions
 
+permissions:
+  contents: read
+  id-token: write
+
+env:
+  AWS_REGION: ap-south-1
+  AWS_ACCOUNT_ID: "356627769772"
+  ECR_REPOSITORY: ezbookkeeping
+
 jobs:
   build:
-    name: Build Application
+    name: Build and Test Application
     runs-on: ubuntu-latest
 
     steps:
@@ -25,12 +35,28 @@ jobs:
           cache: true
 
       - name: Build Go application
-        run: |
-          go build ./...
+        run: go build ./...
 
       - name: Build Docker image
         run: |
           docker build \
             --platform linux/amd64 \
-            -t ezbookkeeping:ci-${{ github.sha }} \
+            -t "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA" \
             .
+
+      - name: Configure AWS credentials using OIDC
+        if: github.event_name == 'push'
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::356627769772:role/ezbookkeeping-dev-github-actions-role
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Log in to Amazon ECR
+        if: github.event_name == 'push'
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Push Docker image to ECR
+        if: github.event_name == 'push'
+        run: |
+          docker push \
+            "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA"
