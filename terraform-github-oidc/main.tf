@@ -65,7 +65,7 @@ data "aws_iam_policy_document" "github_actions_assume_role" {
       test     = "StringEquals"
       variable = "token.actions.githubusercontent.com:sub"
       values = [
-        "repo:${local.github_repo}:ref:refs/heads/${local.github_branch}"
+        "repo:saikirantpy@48900440/ezbookkeeping-platform@1322654300:ref:refs/heads/feature/github-actions"
       ]
     }
   }
