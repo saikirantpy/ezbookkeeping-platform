@@ -44,6 +44,19 @@ jobs:
             -t "$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPOSITORY:$GITHUB_SHA" \
             .
 
+      - name: Diagnose GitHub OIDC context
+        if: github.event_name == 'push'
+        env:
+          GH_EVENT: ${{ github.event_name }}
+          GH_REF: ${{ github.ref }}
+          GH_REPOSITORY: ${{ github.repository }}
+          GH_ACTOR: ${{ github.actor }}
+        run: |
+          echo "Event: $GH_EVENT"
+          echo "Ref: $GH_REF"
+          echo "Repository: $GH_REPOSITORY"
+          echo "Actor: $GH_ACTOR"
+
       - name: Configure AWS credentials using OIDC
         if: github.event_name == 'push'
         uses: aws-actions/configure-aws-credentials@v4
